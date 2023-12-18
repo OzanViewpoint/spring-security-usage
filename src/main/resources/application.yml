@@ -1,0 +1,38 @@
+spring:
+  security: # Spring Security 配置项，对应 SecurityProperties 配置类
+    user: # 配置默认的 InMemoryUserDetailsManager 的用户账号与密码。
+      name: fox  # 账号
+      password: 123456   # 密码
+      roles: ADMIN  # 拥有角色
+
+uaa:
+  service-env:
+    single: true  # 是否为单体
+  auth:
+    sso:
+      user-default-controller: true #使用默认的单点登录controller，可自定义
+    token:
+      timeout: 18000 #access_token超时时间设置，单位：秒
+    refresh-token:
+      timeout: 21000 #refresh-toke超时时间设置，单位：秒，要保证刷新token的超时时间比token的超时间长。如果您设置的刷新token的超时时长小于token的，则会在刷新token的时长上默认加600秒
+    secret: 123456 #token生成密钥
+    header-name: Authorization  #前端向后端传递token时使用HTTP的header名称
+    user-param-name: username #用户登录获取token发送的用户名参数名称
+    pwd-param-name: password #用户登录获取toekn发送的密码参数名称
+    ignore-urls: #权限全面开放的接口，不需要token就可以访问
+      - /api/login/queryuserandchecksecret
+      - /api/codeimage/*
+      - /oauth/token
+      - /api/check/token
+      - /api/confirm/token
+      - /api/sso/login
+      - /api/logout
+      - /api/file/provider/download
+      - /api/adminsmuser/listorgroles/*
+    client-infos:  #客户端校验配置
+      - client-id: YUSP  #客户端id
+        password: $2a$10$KUCCWBOdNbJxCUIIl49.Kev8Lgnb8gMu/XJIdqY0ZuiDUZIcs5ww6  #客户端密码
+        verify-code: True  #是否校验验证码
+#      - client-id: TEST
+#        password: $2a$10$KUCCWBOdNbJxCUIIl49.Kev8Lgnb8gMu/XJIdqY0ZuiDUZIcs5ww6
+#        verify-code: true
